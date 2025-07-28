@@ -26,10 +26,8 @@ export default {
   // Plugins to run before rendering page
   plugins: [
     // your existing QR-code plugin
-    { src: "~/plugins/html5-qrcode.js", mode: "client" }
 
     // basic swipe-gesture plugin
-    
   ],
 
   // Auto import components
@@ -92,6 +90,8 @@ export default {
     },
   },
 
-  // Build Configuration
-  build: {},
+  // ✅ Build Configuration with PostCSS fix
+  build: {
+  
+},
 };

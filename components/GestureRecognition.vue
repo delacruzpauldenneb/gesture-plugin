@@ -1,4 +1,3 @@
-
 <template>
   <div>
     <video ref="videoRef" autoplay playsinline class="mx-auto rounded shadow" width="640" height="480" />
@@ -27,13 +26,25 @@ const detectGesture = (landmarks) => {
     pinky: landmarks[20][1] < landmarks[18][1],
   }
 
-  const openFingers = Object.values(fingers).filter(Boolean).length
+  const raised = Object.entries(fingers)
+    .filter(([, up]) => up)
+    .map(([name]) => name)
 
-  if (openFingers === 0) return 'Fist'
-  if (openFingers === 5) return 'Open Hand'
+  // Counting gestures
+  if (raised.length === 1 && raised.includes('index')) return '1'
+  if (raised.includes('index') && raised.includes('middle') && raised.length === 2) return '2'
+  if (raised.includes('index') && raised.includes('middle') && raised.includes('ring') && raised.length === 3) return '3'
+  if (raised.includes('index') && raised.includes('middle') && raised.includes('ring') && raised.includes('pinky') && raised.length === 4) return '4'
+  if (raised.length === 5) return '5'
+
+  // Common gestures
+  if (raised.includes('index') && raised.includes('middle') && raised.length === 2) return 'Peace ✌️'
+  if (raised.includes('index') && raised.includes('pinky') && raised.length === 2) return 'Rock 🤘'
+  if (fingers.thumb && fingers.index && !fingers.middle && !fingers.ring && !fingers.pinky) return 'OK 👌'
+  if (raised.length === 0) return 'Fist'
   if (fingers.thumb && !fingers.index && !fingers.middle && !fingers.ring && !fingers.pinky) return 'Thumbs Up'
 
-  return 'Unknown'
+  return `Raised fingers: ${raised.join(', ')}`
 }
 
 const setupCamera = async () => {
